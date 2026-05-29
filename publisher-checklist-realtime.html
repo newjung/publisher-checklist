@@ -460,12 +460,16 @@ window.closeModal=function(){
   document.getElementById('newProjectInput').value='';
 };
 
+let _creating=false;
 window.createProject=async function(){
+  if(_creating) return; _creating=true;
   const name=document.getElementById('newProjectInput').value.trim();
   if(!name){showToast('프로젝트명을 입력해주세요');return;}
   const key=safeKey(name)+'_'+Date.now();
   await set(ref(db,`projects/${key}`),{name,createdAt:Date.now(),state:{}});
-  closeModal();
+  window._selectProject(key,name);
+  _creating=false;
+};
   showToast(`"${name}" 프로젝트 생성!`);
   window._selectProject(key,name);
 };
@@ -497,7 +501,7 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-document.getElementById('newProjectInput').addEventListener('keydown',e=>{if(e.key==='Enter')window.createProject();});
+document.getElementById('newProjectInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.createProject();}});
 </script>
 </body>
 </html>
