@@ -333,8 +333,7 @@ function renderProjectList(data) {
     const name = p.name || key;
     const pct  = calcPct(p.state);
     return [
-      '<div class="project-item' + (key === currentKey ? ' active' : '') + '"',
-      ' data-key="' + key + '" data-name="' + name.replace(/"/g, '&quot;') + '">',
+      '<div class="project-item" data-key="' + key + '" data-name="' + name.replace(/"/g, '&quot;') + '">',
       '<div class="project-dot"></div>',
       '<div class="project-name">' + name + '</div>',
       '<div class="project-pct">' + pct + '%</div>',
@@ -342,6 +341,13 @@ function renderProjectList(data) {
       '</div>'
     ].join('');
   }).join('');
+  syncActiveClass();
+}
+
+function syncActiveClass() {
+  document.querySelectorAll('#projectList .project-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.key === currentKey);
+  });
 }
 
 // 사이드바 이벤트 위임
@@ -364,6 +370,7 @@ function selectProject(key, name) {
   currentName = name;
   activeTab   = CAT_KEYS[0];
   initState();
+  syncActiveClass();
 
   qs('topbarTitle').textContent = name;
   qs('topbarSub').textContent   = '실시간 동기화 중';
