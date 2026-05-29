@@ -35,12 +35,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .project-item:hover{background:var(--surface2);}
 .project-item.active{background:var(--accent-light);}
 .project-item.active .project-name{color:var(--accent);font-weight:500;}
-.project-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong);flex-shrink:0;}
+.project-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong);flex-shrink:0;transition:background 0.2s;}
 .project-item.active .project-dot{background:var(--accent-mid);}
 .project-name{font-size:13px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .project-pct{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);}
 .project-item.active .project-pct{color:var(--accent);}
-.project-del{opacity:0;font-size:11px;color:var(--text-faint);background:none;border:none;cursor:pointer;padding:2px 5px;border-radius:3px;transition:all 0.1s;flex-shrink:0;}
+.project-del{opacity:0;font-size:11px;color:var(--text-faint);background:none;border:none;cursor:pointer;padding:2px 5px;border-radius:3px;transition:all 0.1s;flex-shrink:0;line-height:1;}
 .project-item:hover .project-del{opacity:1;}
 .project-del:hover{color:var(--danger);background:var(--tag-must-bg);}
 .sidebar-footer{padding:12px 16px;border-top:0.5px solid var(--border);}
@@ -50,13 +50,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .sync-dot.syncing{background:#f0a030;animation:pulse 0.8s infinite;}
 .sync-dot.error{background:var(--danger);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.empty-projects{padding:24px 12px;text-align:center;color:var(--text-faint);font-size:12px;line-height:1.7;}
+.empty-projects{padding:24px 12px;text-align:center;color:var(--text-faint);font-size:12px;line-height:1.8;}
 
 /* Main */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{padding:14px 24px;border-bottom:0.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;}
 .topbar-title{font-size:16px;font-weight:600;}
-.topbar-sub{font-size:12px;color:var(--text-muted);}
+.topbar-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
 .topbar-actions{display:flex;align-items:center;gap:6px;}
 .btn{font-family:'Noto Sans KR',sans-serif;font-size:12px;padding:6px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border-strong);background:var(--surface);color:var(--text-muted);cursor:pointer;transition:all 0.15s;}
 .btn:hover{color:var(--text);border-color:var(--text);}
@@ -64,6 +64,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .content-area{flex:1;overflow-y:auto;padding:20px 24px;}
 .content-area::-webkit-scrollbar{width:4px;}
 .content-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+/* Welcome */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-faint);padding:60px 40px;text-align:center;}
+.welcome-icon{font-size:36px;opacity:0.25;}
+.welcome h2{font-size:15px;font-weight:500;color:var(--text-muted);}
+.welcome p{font-size:13px;line-height:1.7;}
 
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
@@ -99,7 +105,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .item:hover{background:var(--surface2);}
 .item label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;width:100%;padding:10px 16px;}
 .item input[type=checkbox]{width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer;}
-.item-text{font-size:12px;line-height:1.6;flex:1;transition:color 0.15s;}
+.item-text{font-size:12px;line-height:1.6;flex:1;}
 .item-text.checked{color:var(--text-faint);text-decoration:line-through;}
 .tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;}
 .tag{font-size:9px;padding:1px 6px;border-radius:99px;font-weight:500;}
@@ -108,12 +114,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .tag-perf{background:var(--tag-perf-bg);color:var(--tag-perf);}
 .tag-seo{background:var(--tag-seo-bg);color:var(--tag-seo);}
 .all-done{text-align:center;padding:16px;font-size:12px;color:var(--accent);font-weight:500;}
-
-/* Welcome */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-faint);padding:40px;}
-.welcome-icon{font-size:40px;opacity:0.3;}
-.welcome h2{font-size:16px;font-weight:500;color:var(--text-muted);}
-.welcome p{font-size:13px;text-align:center;line-height:1.7;}
 
 /* Modal */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(2px);}
@@ -131,6 +131,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 </head>
 <body>
 
+<!-- Sidebar -->
 <aside class="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-title">프로젝트</div>
@@ -147,6 +148,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </div>
 </aside>
 
+<!-- Main -->
 <div class="main">
   <div class="topbar">
     <div>
@@ -167,10 +169,11 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
+<!-- Modal -->
 <div class="overlay" id="modal" style="display:none">
   <div class="modal">
     <h3>새 프로젝트 만들기</h3>
-    <p>프로젝트 이름을 입력하세요. 같은 이름의 프로젝트에 접속한 팀원과 실시간으로 공유됩니다.</p>
+    <p>프로젝트 이름을 입력하세요.<br>같은 프로젝트에 접속한 팀원과 실시간으로 공유됩니다.</p>
     <input type="text" id="newProjectInput" placeholder="예: 메인페이지-리뉴얼" maxlength="40">
     <div class="modal-actions">
       <button class="btn" id="cancelBtn">취소</button>
@@ -185,6 +188,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, onValue, off, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+// ── Firebase 설정 ──────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyBjbnF1OX1WMw-SNiHsvuEqQy7bf8taXus",
   authDomain: "publisher-checklist.firebaseapp.com",
@@ -196,320 +200,352 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const db  = getDatabase(app);
 
-function safeKey(str) {
-  return str.replace(/[.#$\/\[\]\s]/g, '_');
-}
-
+// ── 체크리스트 데이터 ───────────────────────────────────
 const CATS = {
-  HTML_구조: { label: "HTML 구조", items: [
+  HTML_구조:    { label: "HTML 구조",      items: [
     { t: 'DOCTYPE 선언 및 lang 속성 지정 (예: lang="ko")', tags: ["must"] },
-    { t: "meta charset, viewport 설정 확인", tags: ["must"] },
-    { t: "title 태그 각 페이지별 고유 작성", tags: ["seo"] },
-    { t: "meta description 작성 여부", tags: ["seo"] },
+    { t: "meta charset, viewport 설정 확인",               tags: ["must"] },
+    { t: "title 태그 각 페이지별 고유 작성",               tags: ["seo"]  },
+    { t: "meta description 작성 여부",                     tags: ["seo"]  },
     { t: "시맨틱 태그 사용 (header, nav, main, article, section, footer)", tags: ["must"] },
-    { t: "heading 계층 구조 논리적 사용 (h1 ~ h6)", tags: ["a11y"] },
-    { t: '이미지 alt 속성 모두 기입 (장식 이미지는 alt="")', tags: ["a11y", "must"] },
-    { t: "form 요소 label 연결 확인 (for-id 매칭)", tags: ["a11y"] },
-    { t: '버튼에 type 속성 명시 (type="button" 등)', tags: ["must"] },
-    { t: '링크 텍스트 명확성 확인 ("여기 클릭" 지양)', tags: ["a11y"] },
-    { t: "tabindex 사용 최소화 및 올바른 탭 순서 확인", tags: ["a11y"] },
-    { t: "오픈 그래프(OG) 태그 작성 여부", tags: ["seo"] },
+    { t: "heading 계층 구조 논리적 사용 (h1 ~ h6)",        tags: ["a11y"] },
+    { t: '이미지 alt 속성 모두 기입 (장식 이미지는 alt="")', tags: ["a11y","must"] },
+    { t: "form 요소 label 연결 확인 (for-id 매칭)",        tags: ["a11y"] },
+    { t: 'button type 속성 명시 (type="button" 등)',       tags: ["must"] },
+    { t: '링크 텍스트 명확성 확인 ("여기 클릭" 지양)',     tags: ["a11y"] },
+    { t: "tabindex 사용 최소화 및 올바른 탭 순서 확인",    tags: ["a11y"] },
+    { t: "오픈 그래프(OG) 태그 작성 여부",                 tags: ["seo"]  },
   ]},
-  CSS_스타일: { label: "CSS / 스타일", items: [
-    { t: "CSS Reset 또는 Normalize 적용 여부", tags: ["must"] },
-    { t: "미디어 쿼리 분기점(breakpoint) 일관성 확인", tags: ["must"] },
+  CSS_스타일:   { label: "CSS / 스타일",   items: [
+    { t: "CSS Reset 또는 Normalize 적용 여부",             tags: ["must"] },
+    { t: "미디어 쿼리 breakpoint 일관성 확인",             tags: ["must"] },
     { t: "반응형 레이아웃 주요 해상도 점검 (320px, 768px, 1280px+)", tags: ["must"] },
     { t: "CSS 변수(Custom Properties) 또는 디자인 토큰 활용", tags: [] },
-    { t: "z-index 충돌 및 스태킹 컨텍스트 확인", tags: [] },
+    { t: "z-index 충돌 및 스태킹 컨텍스트 확인",           tags: [] },
     { t: "overflow 처리 (hidden, scroll, clip) 적절성 확인", tags: [] },
-    { t: "폰트 로딩 전략 확인 (font-display: swap 등)", tags: ["perf"] },
-    { t: "미사용 CSS 클래스 정리", tags: ["perf"] },
-    { t: "hover / focus / active 상태 스타일 구분 구현", tags: ["a11y"] },
-    { t: "포커스 링(focus ring) 제거 안 했는지 확인 (접근성)", tags: ["a11y", "must"] },
+    { t: "폰트 로딩 전략 확인 (font-display: swap 등)",    tags: ["perf"] },
+    { t: "미사용 CSS 클래스 정리",                         tags: ["perf"] },
+    { t: "hover / focus / active 상태 스타일 구분 구현",   tags: ["a11y"] },
+    { t: "포커스 링(focus ring) 제거 안 했는지 확인",      tags: ["a11y","must"] },
     { t: "다크모드 지원 여부 또는 prefers-color-scheme 고려", tags: [] },
-    { t: "print 스타일시트 필요 여부 검토", tags: [] },
+    { t: "print 스타일시트 필요 여부 검토",                tags: [] },
   ]},
   크로스_브라우저: { label: "크로스 브라우저", items: [
     { t: "Chrome / Edge / Firefox / Safari 주요 브라우저 QA", tags: ["must"] },
-    { t: "iOS Safari 렌더링 확인 (특히 -webkit- 처리)", tags: ["must"] },
-    { t: "Android Chrome 확인", tags: ["must"] },
-    { t: "IE 지원 범위 확인 및 폴리필 처리 (필요시)", tags: [] },
-    { t: "CSS Grid / Flexbox 지원 범위 확인", tags: [] },
-    { t: "position: sticky 동작 확인 (Safari 특이사항)", tags: [] },
-    { t: "input type별 모바일 키보드 타입 확인", tags: [] },
+    { t: "iOS Safari 렌더링 확인 (특히 -webkit- 처리)",   tags: ["must"] },
+    { t: "Android Chrome 확인",                           tags: ["must"] },
+    { t: "IE 지원 범위 확인 및 폴리필 처리 (필요시)",     tags: [] },
+    { t: "CSS Grid / Flexbox 지원 범위 확인",             tags: [] },
+    { t: "position: sticky 동작 확인 (Safari 특이사항)",  tags: [] },
+    { t: "input type별 모바일 키보드 타입 확인",           tags: [] },
     { t: "100vh 모바일 주소창 이슈 대응 여부 (dvh 고려)", tags: [] },
   ]},
-  접근성_A11y: { label: "접근성 (A11y)", items: [
-    { t: "ARIA 역할(role) 올바른 사용 여부", tags: ["a11y", "must"] },
+  접근성_A11y:  { label: "접근성 (A11y)",  items: [
+    { t: "ARIA 역할(role) 올바른 사용 여부",               tags: ["a11y","must"] },
     { t: "aria-label / aria-labelledby / aria-describedby 적절 사용", tags: ["a11y"] },
-    { t: "모달·팝업: 포커스 트랩 및 ESC 닫기 구현", tags: ["a11y"] },
-    { t: "색상만으로 정보 구분하지 않는지 확인", tags: ["a11y"] },
-    { t: "명도 대비 비율 4.5:1 이상 확인 (WCAG AA)", tags: ["a11y", "must"] },
+    { t: "모달·팝업: 포커스 트랩 및 ESC 닫기 구현",       tags: ["a11y"] },
+    { t: "색상만으로 정보 구분하지 않는지 확인",           tags: ["a11y"] },
+    { t: "명도 대비 비율 4.5:1 이상 확인 (WCAG AA)",      tags: ["a11y","must"] },
     { t: "스크린리더 주요 흐름 테스트 (NVDA, VoiceOver)", tags: ["a11y"] },
-    { t: "키보드만으로 모든 인터랙션 가능한지 확인", tags: ["a11y", "must"] },
-    { t: "스킵 네비게이션(skip nav) 링크 구현 여부", tags: ["a11y"] },
-    { t: "동영상/GIF 자동재생 및 움직임 최소화 (prefers-reduced-motion)", tags: ["a11y"] },
+    { t: "키보드만으로 모든 인터랙션 가능한지 확인",       tags: ["a11y","must"] },
+    { t: "스킵 네비게이션(skip nav) 링크 구현 여부",      tags: ["a11y"] },
+    { t: "동영상/GIF 자동재생 움직임 최소화 (prefers-reduced-motion)", tags: ["a11y"] },
   ]},
-  성능_최적화: { label: "성능 / 최적화", items: [
-    { t: "이미지 포맷 최적화 (WebP / AVIF 사용 여부)", tags: ["perf", "must"] },
-    { t: "이미지 width/height 속성 지정 (CLS 방지)", tags: ["perf"] },
-    { t: 'lazy loading 적용 여부 (loading="lazy")', tags: ["perf"] },
-    { t: "CSS / JS 파일 압축 및 minify 확인", tags: ["perf"] },
-    { t: "렌더링 블로킹 리소스 확인 (defer / async)", tags: ["perf"] },
-    { t: "불필요한 서드파티 스크립트 제거", tags: ["perf"] },
-    { t: "폰트 서브셋 또는 필요 font-weight만 로드", tags: ["perf"] },
-    { t: "Core Web Vitals 점수 확인 (LCP, CLS, INP)", tags: ["perf", "must"] },
+  성능_최적화:  { label: "성능 / 최적화",  items: [
+    { t: "이미지 포맷 최적화 (WebP / AVIF 사용 여부)",    tags: ["perf","must"] },
+    { t: "이미지 width/height 속성 지정 (CLS 방지)",      tags: ["perf"] },
+    { t: 'lazy loading 적용 여부 (loading="lazy")',        tags: ["perf"] },
+    { t: "CSS / JS 파일 압축 및 minify 확인",             tags: ["perf"] },
+    { t: "렌더링 블로킹 리소스 확인 (defer / async)",     tags: ["perf"] },
+    { t: "불필요한 서드파티 스크립트 제거",               tags: ["perf"] },
+    { t: "폰트 서브셋 또는 필요 font-weight만 로드",      tags: ["perf"] },
+    { t: "Core Web Vitals 점수 확인 (LCP, CLS, INP)",    tags: ["perf","must"] },
   ]},
-  QA_기타: { label: "QA / 기타", items: [
-    { t: "콘솔 에러 / 경고 없음 확인", tags: ["must"] },
-    { t: "404 페이지, 에러 페이지 스타일 적용 여부", tags: [] },
-    { t: "빈 상태(empty state) UI 존재 여부", tags: [] },
-    { t: "로딩 상태 스피너 / 스켈레톤 UI 구현", tags: [] },
-    { t: "텍스트 오버플로우(말줄임) 처리 확인", tags: [] },
+  QA_기타:      { label: "QA / 기타",      items: [
+    { t: "콘솔 에러 / 경고 없음 확인",                   tags: ["must"] },
+    { t: "404 페이지, 에러 페이지 스타일 적용 여부",     tags: [] },
+    { t: "빈 상태(empty state) UI 존재 여부",            tags: [] },
+    { t: "로딩 상태 스피너 / 스켈레톤 UI 구현",          tags: [] },
+    { t: "텍스트 오버플로우(말줄임) 처리 확인",          tags: [] },
     { t: "긴 URL, 긴 문자열 입력 시 레이아웃 깨짐 방지", tags: [] },
-    { t: "다국어/긴 텍스트 대응 여부 (국제화 고려시)", tags: [] },
-    { t: "favicon 및 apple-touch-icon 설정", tags: [] },
-    { t: "robots.txt, sitemap.xml 확인 (SEO)", tags: ["seo"] },
-    { t: "HTTPS 적용 및 mixed content 없음 확인", tags: ["must"] },
+    { t: "다국어/긴 텍스트 대응 여부 (국제화 고려시)",   tags: [] },
+    { t: "favicon 및 apple-touch-icon 설정",             tags: [] },
+    { t: "robots.txt, sitemap.xml 확인 (SEO)",           tags: ["seo"] },
+    { t: "HTTPS 적용 및 mixed content 없음 확인",        tags: ["must"] },
   ]}
 };
 
-const catKeys = Object.keys(CATS);
-const tagLabel = { must:"필수", a11y:"접근성", perf:"성능", seo:"SEO" };
+const CAT_KEYS  = Object.keys(CATS);
+const TAG_LABEL = { must:"필수", a11y:"접근성", perf:"성능", seo:"SEO" };
 
-let activeTab = catKeys[0];
-let state = {};
-let currentProjectKey = '';
-let currentProjectName = '';
-let stateListener = null;
-let projectsData = {};
-let creating = false;
+// ── 상태 변수 ───────────────────────────────────────────
+let state            = {};   // 현재 프로젝트 체크 상태
+let activeTab        = CAT_KEYS[0];
+let currentKey       = '';   // 현재 선택된 Firebase 프로젝트 키
+let currentName      = '';
+let currentStateRef  = null; // 현재 구독 중인 Firebase ref
+let creating         = false;
 
-function totalItems() { return catKeys.reduce((a, c) => a + CATS[c].items.length, 0); }
-function doneItems() { return Object.values(state).filter(Boolean).length; }
-function catDone(cat) { return CATS[cat].items.filter((_, i) => state[cat + '_' + i]).length; }
-function calcPct(st) {
+// ── 유틸 ────────────────────────────────────────────────
+function safeKey(str)  { return str.replace(/[.#$/\[\]\s]/g, '_'); }
+function totalItems()  { return CAT_KEYS.reduce((a, c) => a + CATS[c].items.length, 0); }
+function doneItems()   { return Object.values(state).filter(Boolean).length; }
+function catDone(cat)  { return CATS[cat].items.filter((_, i) => state[cat + '_' + i]).length; }
+function calcPct(st)   {
   if (!st) return 0;
-  const done = catKeys.reduce((a, c) => a + CATS[c].items.filter((_, i) => st[c + '_' + i]).length, 0);
+  const done = CAT_KEYS.reduce((a, c) => a + CATS[c].items.filter((_, i) => st[c + '_' + i]).length, 0);
   return Math.round(done / totalItems() * 100);
 }
-
+function qs(id)        { return document.getElementById(id); }
 function setSyncStatus(cls, label) {
-  document.getElementById('syncDot').className = 'sync-dot ' + cls;
-  document.getElementById('syncLabel').textContent = label;
+  qs('syncDot').className = 'sync-dot ' + cls;
+  qs('syncLabel').textContent = label;
 }
-
 function showToast(msg) {
-  const el = document.getElementById('toast');
+  const el = qs('toast');
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
 }
+function initState() {
+  state = {};
+  CAT_KEYS.forEach(cat => CATS[cat].items.forEach((_, i) => { state[cat + '_' + i] = false; }));
+}
 
-// 프로젝트 목록 실시간 구독
+// ── 프로젝트 목록 구독 ──────────────────────────────────
 onValue(ref(db, 'projects'), snapshot => {
-  projectsData = snapshot.val() || {};
-  renderProjectList();
+  const data = snapshot.val() || {};
+  renderProjectList(data);
   setSyncStatus('connected', '실시간 연결됨');
 }, () => setSyncStatus('error', '연결 실패'));
 
-function renderProjectList() {
-  const list = document.getElementById('projectList');
-  const keys = Object.keys(projectsData);
+function renderProjectList(data) {
+  const list = qs('projectList');
+  const keys = Object.keys(data);
   if (!keys.length) {
     list.innerHTML = '<div class="empty-projects">프로젝트가 없어요.<br>새 프로젝트를 만들어보세요!</div>';
     return;
   }
   list.innerHTML = keys.map(key => {
-    const p = projectsData[key];
-    const name = (p && p.name) ? p.name : key;
-    const pct = calcPct(p && p.state);
-    const isActive = key === currentProjectKey;
-    return '<div class="project-item' + (isActive ? ' active' : '') + '" data-key="' + key + '" data-name="' + name + '">' +
-      '<div class="project-dot"></div>' +
-      '<div class="project-name">' + name + '</div>' +
-      '<div class="project-pct">' + pct + '%</div>' +
-      '<button class="project-del" data-del="' + key + '" data-delname="' + name + '">✕</button>' +
-      '</div>';
+    const p    = data[key] || {};
+    const name = p.name || key;
+    const pct  = calcPct(p.state);
+    return [
+      '<div class="project-item' + (key === currentKey ? ' active' : '') + '"',
+      ' data-key="' + key + '" data-name="' + name.replace(/"/g, '&quot;') + '">',
+      '<div class="project-dot"></div>',
+      '<div class="project-name">' + name + '</div>',
+      '<div class="project-pct">' + pct + '%</div>',
+      '<button class="project-del" data-del="' + key + '" data-delname="' + name.replace(/"/g, '&quot;') + '">✕</button>',
+      '</div>'
+    ].join('');
   }).join('');
 }
 
-document.getElementById('projectList').addEventListener('click', function(e) {
+// 사이드바 이벤트 위임
+qs('projectList').addEventListener('click', e => {
   const delBtn = e.target.closest('[data-del]');
-  if (delBtn) {
-    e.stopPropagation();
-    deleteProject(delBtn.dataset.del, delBtn.dataset.delname);
-    return;
-  }
-  const item = e.target.closest('.project-item');
+  if (delBtn) { e.stopPropagation(); deleteProject(delBtn.dataset.del, delBtn.dataset.delname); return; }
+  const item = e.target.closest('.project-item[data-key]');
   if (item) selectProject(item.dataset.key, item.dataset.name);
 });
 
+// ── 프로젝트 선택 ───────────────────────────────────────
 function selectProject(key, name) {
-  if (stateListener) { off(stateListener); stateListener = null; }
-  currentProjectKey = key;
-  currentProjectName = name;
-  activeTab = catKeys[0];
-  catKeys.forEach(cat => CATS[cat].items.forEach((_, i) => { state[cat + '_' + i] = false; }));
+  // 기존 구독 해제 (ref에 대해 off 호출)
+  if (currentStateRef) {
+    off(currentStateRef);
+    currentStateRef = null;
+  }
 
-  document.getElementById('topbarTitle').textContent = name;
-  document.getElementById('topbarSub').textContent = '실시간 동기화 중';
-  document.getElementById('contentArea').innerHTML =
-    '<div class="stats">' +
-      '<div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">전체 항목</div></div>' +
-      '<div class="stat done"><div class="stat-num" id="s-done">0</div><div class="stat-label">완료</div></div>' +
-      '<div class="stat left"><div class="stat-num" id="s-left">0</div><div class="stat-label">남은 항목</div></div>' +
-      '<div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-label">진행률</div></div>' +
-    '</div>' +
-    '<div class="progress-wrap">' +
-      '<div class="progress-top"><span>전체 진행률</span><strong id="progressText">0 / 0</strong></div>' +
-      '<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>' +
-    '</div>' +
-    '<div class="tabs" id="tabs"></div>' +
-    '<div id="section"></div>';
+  currentKey  = key;
+  currentName = name;
+  activeTab   = CAT_KEYS[0];
+  initState();
 
-  const sRef = ref(db, 'projects/' + key + '/state');
-  stateListener = onValue(sRef, snapshot => {
-    const saved = snapshot.val() || {};
-    catKeys.forEach(cat => CATS[cat].items.forEach((_, i) => {
-      state[cat + '_' + i] = saved[cat + '_' + i] || false;
-    }));
-    updateStats();
-    renderProjectList();
+  qs('topbarTitle').textContent = name;
+  qs('topbarSub').textContent   = '실시간 동기화 중';
+  qs('contentArea').innerHTML   = renderMainHTML();
+
+  // 탭 이벤트
+  qs('tabs').addEventListener('click', e => {
+    const tab = e.target.closest('[data-tab]');
+    if (!tab) return;
+    activeTab = tab.dataset.tab;
+    renderTabs();
+    renderSection();
   });
 
-  document.getElementById('contentArea').addEventListener('change', function(e) {
+  // 체크박스 이벤트
+  qs('contentArea').addEventListener('change', e => {
     if (e.target.type !== 'checkbox') return;
-    const key2 = e.target.dataset.key;
-    const val = e.target.checked;
-    state[key2] = val;
+    const stKey = e.target.dataset.key;
+    const val   = e.target.checked;
+    if (!stKey) return;
+    state[stKey] = val;
     updateStats();
     setSyncStatus('syncing', '저장 중...');
-    set(ref(db, 'projects/' + currentProjectKey + '/state/' + key2), val)
+    set(ref(db, 'projects/' + currentKey + '/state/' + stKey), val)
       .then(() => setSyncStatus('connected', '실시간 연결됨'))
       .catch(err => { setSyncStatus('error', '저장 실패'); showToast('저장 실패: ' + err.message); });
   });
+
+  // Firebase 상태 구독
+  currentStateRef = ref(db, 'projects/' + key + '/state');
+  onValue(currentStateRef, snapshot => {
+    const saved = snapshot.val() || {};
+    CAT_KEYS.forEach(cat => CATS[cat].items.forEach((_, i) => {
+      state[cat + '_' + i] = saved[cat + '_' + i] || false;
+    }));
+    updateStats();
+  });
+}
+
+function renderMainHTML() {
+  return [
+    '<div class="stats">',
+      '<div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">전체 항목</div></div>',
+      '<div class="stat done"><div class="stat-num" id="s-done">0</div><div class="stat-label">완료</div></div>',
+      '<div class="stat left"><div class="stat-num" id="s-left">0</div><div class="stat-label">남은 항목</div></div>',
+      '<div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-label">진행률</div></div>',
+    '</div>',
+    '<div class="progress-wrap">',
+      '<div class="progress-top"><span>전체 진행률</span><strong id="progressText">0 / 0</strong></div>',
+      '<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>',
+    '</div>',
+    '<div class="tabs" id="tabs"></div>',
+    '<div id="section"></div>'
+  ].join('');
 }
 
 function updateStats() {
-  const tot = totalItems(), done = doneItems(), left = tot - done, pct = tot ? Math.round(done / tot * 100) : 0;
-  const pf = document.getElementById('progressFill');
-  const pt = document.getElementById('progressText');
-  if (pf) pf.style.width = pct + '%';
-  if (pt) pt.textContent = done + ' / ' + tot;
-  const st = document.getElementById('s-total');
-  const sd = document.getElementById('s-done');
-  const sl = document.getElementById('s-left');
-  const sp = document.getElementById('s-pct');
-  if (st) st.textContent = tot;
-  if (sd) sd.textContent = done;
-  if (sl) sl.textContent = left;
-  if (sp) sp.textContent = pct + '%';
+  const tot  = totalItems();
+  const done = doneItems();
+  const pct  = tot ? Math.round(done / tot * 100) : 0;
+
+  const pf = qs('progressFill');   if (pf) pf.style.width = pct + '%';
+  const pt = qs('progressText');   if (pt) pt.textContent = done + ' / ' + tot;
+  const st = qs('s-total');        if (st) st.textContent = tot;
+  const sd = qs('s-done');         if (sd) sd.textContent = done;
+  const sl = qs('s-left');         if (sl) sl.textContent = tot - done;
+  const sp = qs('s-pct');          if (sp) sp.textContent = pct + '%';
+
   renderTabs();
   renderSection();
 }
 
 function renderTabs() {
-  const el = document.getElementById('tabs');
+  const el = qs('tabs');
   if (!el) return;
-  el.innerHTML = catKeys.map(cat => {
-    const done = catDone(cat), total = CATS[cat].items.length;
-    return '<button class="tab' + (cat === activeTab ? ' active' : '') + '" data-tab="' + cat + '">' +
-      CATS[cat].label + '<span class="tab-badge">' + done + '/' + total + '</span></button>';
+  el.innerHTML = CAT_KEYS.map(cat => {
+    const done  = catDone(cat);
+    const total = CATS[cat].items.length;
+    return [
+      '<button class="tab' + (cat === activeTab ? ' active' : '') + '" data-tab="' + cat + '">',
+      CATS[cat].label,
+      '<span class="tab-badge">' + done + '/' + total + '</span>',
+      '</button>'
+    ].join('');
   }).join('');
 }
 
-document.getElementById('contentArea').addEventListener('click', function(e) {
-  const tab = e.target.closest('[data-tab]');
-  if (tab) { activeTab = tab.dataset.tab; renderSection(); renderTabs(); }
-});
-
 function renderSection() {
-  const el = document.getElementById('section');
+  const el = qs('section');
   if (!el) return;
-  const cat = activeTab, items = CATS[cat].items;
-  const done = catDone(cat), total = items.length;
-  el.innerHTML = '<div class="section">' +
-    '<div class="section-header">' +
-      '<div class="section-title">' + CATS[cat].label + '</div>' +
-      '<span class="section-progress' + (done === total ? ' complete' : '') + '">' + (done === total ? '✓ 완료' : done + ' / ' + total) + '</span>' +
-    '</div>' +
-    '<div>' +
-    items.map((item, i) => {
-      const k = cat + '_' + i, checked = state[k];
-      const tagHtml = item.tags.length ? '<div class="tags">' + item.tags.map(t => '<span class="tag tag-' + t + '">' + tagLabel[t] + '</span>').join('') + '</div>' : '';
-      return '<div class="item"><label>' +
-        '<input type="checkbox" data-key="' + k + '"' + (checked ? ' checked' : '') + '>' +
-        '<div class="item-text' + (checked ? ' checked' : '') + '">' + item.t + tagHtml + '</div>' +
-        '</label></div>';
-    }).join('') +
-    (done === total ? '<div class="all-done">✓ 이 카테고리 완료!</div>' : '') +
-    '</div></div>';
+  const items = CATS[activeTab].items;
+  const done  = catDone(activeTab);
+  const total = items.length;
+
+  el.innerHTML = [
+    '<div class="section">',
+      '<div class="section-header">',
+        '<div class="section-title">' + CATS[activeTab].label + '</div>',
+        '<span class="section-progress' + (done === total ? ' complete' : '') + '">',
+          done === total ? '✓ 완료' : done + ' / ' + total,
+        '</span>',
+      '</div>',
+      '<div>',
+        items.map((item, i) => {
+          const k       = activeTab + '_' + i;
+          const checked = state[k];
+          const tags    = item.tags.length
+            ? '<div class="tags">' + item.tags.map(t => '<span class="tag tag-' + t + '">' + TAG_LABEL[t] + '</span>').join('') + '</div>'
+            : '';
+          return [
+            '<div class="item"><label>',
+            '<input type="checkbox" data-key="' + k + '"' + (checked ? ' checked' : '') + '>',
+            '<div class="item-text' + (checked ? ' checked' : '') + '">' + item.t + tags + '</div>',
+            '</label></div>'
+          ].join('');
+        }).join(''),
+        done === total ? '<div class="all-done">✓ 이 카테고리 완료!</div>' : '',
+      '</div>',
+    '</div>'
+  ].join('');
 }
 
+// ── 프로젝트 삭제 ───────────────────────────────────────
 async function deleteProject(key, name) {
-  if (!confirm('"' + name + '" 프로젝트를 삭제할까요?')) return;
-  await remove(ref(db, 'projects/' + key));
-  if (currentProjectKey === key) {
-    currentProjectKey = '';
-    document.getElementById('topbarTitle').textContent = '체크리스트';
-    document.getElementById('topbarSub').textContent = '왼쪽에서 프로젝트를 선택하세요';
-    document.getElementById('contentArea').innerHTML = '<div class="welcome"><div class="welcome-icon">✅</div><h2>프로젝트를 선택해주세요</h2><p>왼쪽 사이드바에서 프로젝트를 선택하거나<br>새 프로젝트를 만들어보세요.</p></div>';
+  if (!confirm('"' + name + '" 프로젝트를 삭제할까요?\n모든 체크 데이터가 삭제됩니다.')) return;
+  if (key === currentKey) {
+    if (currentStateRef) { off(currentStateRef); currentStateRef = null; }
+    currentKey  = '';
+    currentName = '';
+    qs('topbarTitle').textContent = '체크리스트';
+    qs('topbarSub').textContent   = '왼쪽에서 프로젝트를 선택하세요';
+    qs('contentArea').innerHTML   = '<div class="welcome"><div class="welcome-icon">✅</div><h2>프로젝트를 선택해주세요</h2><p>왼쪽 사이드바에서 프로젝트를 선택하거나<br>새 프로젝트를 만들어보세요.</p></div>';
   }
+  await remove(ref(db, 'projects/' + key));
   showToast('"' + name + '" 삭제됨');
 }
 
-// Modal
-document.getElementById('newBtn').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'flex';
-  setTimeout(() => document.getElementById('newProjectInput').focus(), 50);
-});
-document.getElementById('cancelBtn').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('newProjectInput').value = '';
-});
+// ── 새 프로젝트 모달 ────────────────────────────────────
+function openModal()  { qs('modal').style.display = 'flex'; setTimeout(() => qs('newProjectInput').focus(), 50); }
+function closeModal() { qs('modal').style.display = 'none'; qs('newProjectInput').value = ''; creating = false; }
 
 async function createProject() {
   if (creating) return;
-  const name = document.getElementById('newProjectInput').value.trim();
+  const name = qs('newProjectInput').value.trim();
   if (!name) { showToast('프로젝트명을 입력해주세요'); return; }
   creating = true;
+  qs('createBtn').disabled = true;
   const key = safeKey(name) + '_' + Date.now();
   try {
-    await set(ref(db, 'projects/' + key), { name: name, createdAt: Date.now(), state: {} });
-    document.getElementById('modal').style.display = 'none';
-    document.getElementById('newProjectInput').value = '';
+    await set(ref(db, 'projects/' + key), { name, createdAt: Date.now(), state: {} });
+    closeModal();
     showToast('"' + name + '" 프로젝트 생성!');
     selectProject(key, name);
-  } catch(e) {
+  } catch (e) {
     showToast('생성 실패: ' + e.message);
+    creating = false;
+    qs('createBtn').disabled = false;
   }
-  creating = false;
 }
 
-document.getElementById('createBtn').addEventListener('click', createProject);
-document.getElementById('newProjectInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); createProject(); }
-});
+qs('newBtn').addEventListener('click', openModal);
+qs('cancelBtn').addEventListener('click', closeModal);
+qs('createBtn').addEventListener('click', createProject);
+qs('newProjectInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); createProject(); } });
 
-// Reset
-document.getElementById('resetBtn').addEventListener('click', async () => {
-  if (!currentProjectKey) { showToast('프로젝트를 먼저 선택해주세요'); return; }
-  if (!confirm('"' + currentProjectName + '" 체크를 모두 초기화할까요?')) return;
+// ── 초기화 / 내보내기 ───────────────────────────────────
+qs('resetBtn').addEventListener('click', async () => {
+  if (!currentKey) { showToast('프로젝트를 먼저 선택해주세요'); return; }
+  if (!confirm('"' + currentName + '" 체크를 모두 초기화할까요?\n팀원 화면에도 즉시 반영됩니다.')) return;
   const updates = {};
-  catKeys.forEach(cat => CATS[cat].items.forEach((_, i) => { updates[cat + '_' + i] = false; }));
-  await set(ref(db, 'projects/' + currentProjectKey + '/state'), updates);
+  CAT_KEYS.forEach(cat => CATS[cat].items.forEach((_, i) => { updates[cat + '_' + i] = false; }));
+  await set(ref(db, 'projects/' + currentKey + '/state'), updates);
   showToast('↺ 초기화 완료');
 });
 
-// Export
-document.getElementById('exportBtn').addEventListener('click', () => {
-  if (!currentProjectKey) { showToast('프로젝트를 먼저 선택해주세요'); return; }
-  let md = '# ' + currentProjectName + ' - 마크업 퍼블리셔 체크리스트\n\n';
-  md += '> 완료: ' + doneItems() + ' / ' + totalItems() + '\n\n';
-  catKeys.forEach(cat => {
+qs('exportBtn').addEventListener('click', () => {
+  if (!currentKey) { showToast('프로젝트를 먼저 선택해주세요'); return; }
+  const tot  = totalItems();
+  const done = doneItems();
+  let md = '# ' + currentName + ' - 마크업 퍼블리셔 체크리스트\n\n';
+  md += '> 완료: ' + done + ' / ' + tot + ' (' + (tot ? Math.round(done / tot * 100) : 0) + '%)\n\n';
+  CAT_KEYS.forEach(cat => {
     md += '## ' + CATS[cat].label + '\n\n';
     CATS[cat].items.forEach((item, i) => { md += '- [' + (state[cat + '_' + i] ? 'x' : ' ') + '] ' + item.t + '\n'; });
     md += '\n';
