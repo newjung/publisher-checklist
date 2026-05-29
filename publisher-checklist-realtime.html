@@ -5,144 +5,199 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마크업 퍼블리셔 체크리스트</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #f5f4f0; --surface: #ffffff; --border: #e2e0d8; --border-strong: #c8c5ba;
-    --text: #1a1917; --text-muted: #6b6860; --text-faint: #9e9b94;
-    --accent: #1a6b4a; --accent-mid: #2d9669;
-    --tag-must-bg: #fff0eb; --tag-must: #c04a1a;
-    --tag-a11y-bg: #ebf0ff; --tag-a11y: #2a4eb0;
-    --tag-perf-bg: #fff8e6; --tag-perf: #a06510;
-    --tag-seo-bg: #edfaf2;  --tag-seo: #1a6b4a;
-    --radius: 10px; --radius-sm: 6px;
-  }
-  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem 4rem; }
-  .container { max-width: 780px; margin: 0 auto; }
-  .sync-bar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
-  .sync-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
-  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
-  .sync-dot.connected { background: var(--accent-mid); }
-  .sync-dot.syncing { background: #f0a030; animation: pulse 0.8s infinite; }
-  .sync-dot.error { background: #c04a1a; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .project-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .project-input { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; border: 0.5px solid var(--border-strong); border-radius: var(--radius-sm); padding: 7px 12px; background: var(--surface); color: var(--text); width: 200px; outline: none; transition: border-color 0.15s; }
-  .project-input:focus { border-color: var(--accent); }
-  .project-input::placeholder { color: var(--text-faint); }
-  .btn-sm { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; padding: 7px 14px; border-radius: var(--radius-sm); border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-  .btn-sm:hover { color: var(--text); border-color: var(--text); }
-  .btn-sm.primary { background: var(--text); color: #fff; border-color: var(--text); }
-  .btn-sm.primary:hover { opacity: 0.85; }
-  .header { margin-bottom: 0; }
-  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
-  .header p { font-size: 13px; color: var(--text-muted); }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-  .stat-num { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
-  .stat-label { font-size: 11px; color: var(--text-muted); }
-  .stat.done .stat-num { color: var(--accent); }
-  .stat.left .stat-num { color: #c04a1a; }
-  .progress-wrap { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 1.5rem; }
-  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .progress-top span { font-size: 13px; color: var(--text-muted); }
-  .progress-top strong { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-  .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--accent-mid); border-radius: 99px; transition: width 0.4s cubic-bezier(.4,0,.2,1); }
-  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-  .tab { font-family: 'Noto Sans KR', sans-serif; font-size: 12px; padding: 6px 14px; border-radius: 99px; border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
-  .tab:hover { color: var(--text); border-color: var(--text); }
-  .tab.active { background: var(--text); color: #fff; border-color: var(--text); }
-  .tab-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; opacity: 0.7; }
-  .section { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 0.5px solid var(--border); background: #fafaf8; }
-  .section-title { font-size: 14px; font-weight: 500; }
-  .section-progress { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); }
-  .section-progress.complete { color: var(--accent); font-weight: 500; }
-  .items { padding: 4px 0; }
-  .item { display: flex; border-bottom: 0.5px solid var(--border); transition: background 0.1s; }
-  .item:last-child { border-bottom: none; }
-  .item:hover { background: #fafaf8; }
-  .item label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; width: 100%; padding: 11px 18px; }
-  .item input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
-  .item-text { font-size: 13px; line-height: 1.55; flex: 1; transition: color 0.15s; }
-  .item-text.checked { color: var(--text-faint); text-decoration: line-through; }
-  .tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
-  .tag { font-size: 10px; padding: 1px 7px; border-radius: 99px; font-weight: 500; }
-  .tag-must { background: var(--tag-must-bg); color: var(--tag-must); }
-  .tag-a11y { background: var(--tag-a11y-bg); color: var(--tag-a11y); }
-  .tag-perf { background: var(--tag-perf-bg); color: var(--tag-perf); }
-  .tag-seo  { background: var(--tag-seo-bg);  color: var(--tag-seo); }
-  .all-done { text-align: center; padding: 20px; font-size: 13px; color: var(--accent); font-weight: 500; }
-  .actions { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 50; }
-  .modal { background: var(--surface); border-radius: var(--radius); padding: 2rem; width: 360px; max-width: 90vw; }
-  .modal h3 { font-size: 16px; font-weight: 500; margin-bottom: 1rem; }
-  .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.6; }
-  .modal input { width: 100%; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; border: 0.5px solid var(--border-strong); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 12px; outline: none; }
-  .modal input:focus { border-color: var(--accent); }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-  .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--text); color: #fff; font-size: 13px; padding: 10px 18px; border-radius: var(--radius-sm); opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; z-index: 100; }
-  .toast.show { opacity: 1; transform: translateY(0); }
-  @media (max-width: 600px) {
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .sync-bar { flex-direction: column; }
-    .project-input { width: 100%; }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --sidebar-w: 240px;
+  --bg: #f0efe9;
+  --surface: #ffffff;
+  --surface2: #f7f6f2;
+  --border: #e2e0d8;
+  --border-strong: #c8c5ba;
+  --text: #1a1917;
+  --text-muted: #6b6860;
+  --text-faint: #a09d96;
+  --accent: #1a6b4a;
+  --accent-light: #e8f4ee;
+  --accent-mid: #2d9669;
+  --danger: #c04a1a;
+  --tag-must-bg:#fff0eb;--tag-must:#c04a1a;
+  --tag-a11y-bg:#ebf0ff;--tag-a11y:#2a4eb0;
+  --tag-perf-bg:#fff8e6;--tag-perf:#a06510;
+  --tag-seo-bg:#edfaf2;--tag-seo:#1a6b4a;
+  --radius:10px;--radius-sm:6px;--radius-xs:4px;
+}
+
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;overflow:hidden;}
+
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:0.5px solid var(--border);display:flex;flex-direction:column;height:100vh;}
+.sidebar-header{padding:18px 16px 14px;border-bottom:0.5px solid var(--border);}
+.sidebar-title{font-size:13px;font-weight:600;letter-spacing:0.3px;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;}
+.new-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:var(--radius-sm);border:0.5px dashed var(--border-strong);background:transparent;color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;}
+.new-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--text);}
+.project-list{flex:1;overflow-y:auto;padding:8px;}
+.project-list::-webkit-scrollbar{width:4px;}
+.project-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+.project-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;transition:all 0.12s;margin-bottom:2px;position:relative;}
+.project-item:hover{background:var(--surface2);}
+.project-item.active{background:var(--accent-light);}
+.project-item.active .project-name{color:var(--accent);font-weight:500;}
+.project-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong);flex-shrink:0;}
+.project-item.active .project-dot{background:var(--accent-mid);}
+.project-name{font-size:13px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.project-pct{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);}
+.project-item.active .project-pct{color:var(--accent);}
+.project-del{opacity:0;font-size:12px;color:var(--text-faint);background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:3px;transition:all 0.1s;flex-shrink:0;}
+.project-item:hover .project-del{opacity:1;}
+.project-del:hover{color:var(--danger);background:var(--tag-must-bg);}
+.sidebar-footer{padding:12px 16px;border-top:0.5px solid var(--border);}
+.sync-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-faint);}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background 0.3s;}
+.sync-dot.connected{background:var(--accent-mid);}
+.sync-dot.syncing{background:#f0a030;animation:pulse 0.8s infinite;}
+.sync-dot.error{background:var(--danger);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.empty-projects{padding:24px 12px;text-align:center;color:var(--text-faint);font-size:12px;line-height:1.7;}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{padding:14px 24px;border-bottom:0.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.topbar-title{font-size:16px;font-weight:600;}
+.topbar-sub{font-size:12px;color:var(--text-muted);}
+.topbar-actions{display:flex;align-items:center;gap:6px;}
+.btn{font-family:'Noto Sans KR',sans-serif;font-size:12px;padding:6px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border-strong);background:var(--surface);color:var(--text-muted);cursor:pointer;transition:all 0.15s;}
+.btn:hover{color:var(--text);border-color:var(--text);}
+.btn.danger:hover{color:var(--danger);border-color:var(--danger);}
+
+.content-area{flex:1;overflow-y:auto;padding:20px 24px;}
+.content-area::-webkit-scrollbar{width:4px;}
+.content-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;line-height:1;margin-bottom:3px;}
+.stat-label{font-size:11px;color:var(--text-muted);}
+.stat.done .stat-num{color:var(--accent);}
+.stat.left .stat-num{color:var(--danger);}
+
+/* Progress */
+.progress-wrap{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-top span{font-size:12px;color:var(--text-muted);}
+.progress-top strong{font-family:'JetBrains Mono',monospace;font-size:12px;}
+.progress-bar{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent-mid);border-radius:99px;transition:width 0.4s cubic-bezier(.4,0,.2,1);}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;}
+.tab{font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:5px 12px;border-radius:99px;border:0.5px solid var(--border-strong);background:var(--surface);color:var(--text-muted);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;}
+.tab:hover{color:var(--text);border-color:var(--text);}
+.tab.active{background:var(--text);color:#fff;border-color:var(--text);}
+.tab-badge{font-family:'JetBrains Mono',monospace;font-size:9px;opacity:0.6;}
+
+/* Section */
+.section{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid var(--border);background:var(--surface2);}
+.section-title{font-size:13px;font-weight:500;}
+.section-progress{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);}
+.section-progress.complete{color:var(--accent);font-weight:500;}
+.item{display:flex;border-bottom:0.5px solid var(--border);transition:background 0.1s;}
+.item:last-child{border-bottom:none;}
+.item:hover{background:var(--surface2);}
+.item label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;width:100%;padding:10px 16px;}
+.item input[type=checkbox]{width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer;}
+.item-text{font-size:12px;line-height:1.6;flex:1;transition:color 0.15s;}
+.item-text.checked{color:var(--text-faint);text-decoration:line-through;}
+.tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;}
+.tag{font-size:9px;padding:1px 6px;border-radius:99px;font-weight:500;}
+.tag-must{background:var(--tag-must-bg);color:var(--tag-must);}
+.tag-a11y{background:var(--tag-a11y-bg);color:var(--tag-a11y);}
+.tag-perf{background:var(--tag-perf-bg);color:var(--tag-perf);}
+.tag-seo{background:var(--tag-seo-bg);color:var(--tag-seo);}
+.all-done{text-align:center;padding:16px;font-size:12px;color:var(--accent);font-weight:500;}
+
+/* Empty / Welcome */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-faint);padding:40px;}
+.welcome-icon{font-size:40px;opacity:0.3;}
+.welcome h2{font-size:16px;font-weight:500;color:var(--text-muted);}
+.welcome p{font-size:13px;text-align:center;line-height:1.7;}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(2px);}
+.modal{background:var(--surface);border-radius:var(--radius);padding:1.75rem;width:340px;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.12);}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:6px;}
+.modal p{font-size:12px;color:var(--text-muted);margin-bottom:14px;line-height:1.6;}
+.modal input{width:100%;font-family:'Noto Sans KR',sans-serif;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;outline:none;background:var(--surface);}
+.modal input:focus{border-color:var(--accent);}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--text);color:#fff;font-size:12px;padding:9px 16px;border-radius:var(--radius-sm);opacity:0;transform:translateY(6px);transition:all 0.2s;pointer-events:none;z-index:100;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+@media(max-width:680px){
+  .sidebar{position:fixed;left:-100%;z-index:40;transition:left 0.25s;}
+  .sidebar.open{left:0;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="sync-bar">
-    <div class="header">
-      <h1>마크업 퍼블리셔 체크리스트</h1>
-      <p>팀원과 실시간으로 공유됩니다</p>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">프로젝트</div>
+    <button class="new-btn" onclick="showNewProject()">＋ 새 프로젝트</button>
+  </div>
+  <div class="project-list" id="projectList">
+    <div class="empty-projects">프로젝트가 없어요.<br>새 프로젝트를 만들어보세요!</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sync-status">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncLabel">Firebase 연결 중...</span>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-      <div class="sync-status">
-        <div class="sync-dot" id="syncDot"></div>
-        <span id="syncLabel">프로젝트를 선택해주세요</span>
+  </div>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar" id="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="topbar-title" id="topbarTitle">체크리스트</div>
+        <div class="topbar-sub" id="topbarSub">왼쪽에서 프로젝트를 선택하세요</div>
       </div>
-      <div class="project-row">
-        <input class="project-input" type="text" id="projectName" placeholder="프로젝트명 입력..." maxlength="40">
-        <button class="btn-sm primary" onclick="loadProject()">불러오기</button>
-        <button class="btn-sm" onclick="showNewProject()">새 프로젝트</button>
-      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn" onclick="exportMd()">📋 복사</button>
+      <button class="btn danger" onclick="resetAll()">↺ 초기화</button>
     </div>
   </div>
 
-  <div class="stats">
-    <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">전체 항목</div></div>
-    <div class="stat done"><div class="stat-num" id="s-done">0</div><div class="stat-label">완료</div></div>
-    <div class="stat left"><div class="stat-num" id="s-left">0</div><div class="stat-label">남은 항목</div></div>
-    <div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-label">진행률</div></div>
-  </div>
-
-  <div class="progress-wrap">
-    <div class="progress-top">
-      <span>전체 진행률</span>
-      <strong id="progressText">0 / 0</strong>
+  <div class="content-area" id="contentArea">
+    <div class="welcome">
+      <div class="welcome-icon">✅</div>
+      <h2>프로젝트를 선택해주세요</h2>
+      <p>왼쪽 사이드바에서 프로젝트를 선택하거나<br>새 프로젝트를 만들어보세요.</p>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-  </div>
-
-  <div class="tabs" id="tabs"></div>
-  <div id="content"></div>
-
-  <div class="actions">
-    <button class="btn-sm" onclick="resetAll()">↺ 초기화</button>
-    <button class="btn-sm" onclick="exportMd()">📋 마크다운 복사</button>
   </div>
 </div>
 
+<!-- New Project Modal -->
 <div class="overlay" id="newProjectModal" style="display:none">
   <div class="modal">
     <h3>새 프로젝트 만들기</h3>
-    <p>프로젝트 이름을 입력하세요. 같은 이름으로 접속한 팀원과 체크 상태가 실시간으로 공유됩니다.</p>
+    <p>프로젝트 이름을 입력하세요. 같은 이름의 프로젝트에 접속한 팀원과 실시간으로 공유됩니다.</p>
     <input type="text" id="newProjectInput" placeholder="예: 메인페이지-리뉴얼" maxlength="40">
     <div class="modal-actions">
-      <button class="btn-sm" onclick="closeModal()">취소</button>
-      <button class="btn-sm primary" onclick="createProject()">만들기</button>
+      <button class="btn" onclick="closeModal()">취소</button>
+      <button class="btn" style="background:var(--text);color:#fff;border-color:var(--text)" onclick="createProject()">만들기</button>
     </div>
   </div>
 </div>
@@ -151,7 +206,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, off, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBjbnF1OX1WMw-SNiHsvuEqQy7bf8taXus",
@@ -167,235 +222,282 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Firebase 키로 사용할 수 없는 문자 제거: . # $ / [ ] 및 공백
-function safeKey(str) {
-  return str.replace(/[.\#\$\/\[\]\s]/g, '_');
-}
+function safeKey(str){ return str.replace(/[.#$/\[\]\s]/g,'_'); }
 
 const data = {
-  "HTML_구조": { label: "HTML 구조", items: [
-    {t:'DOCTYPE 선언 및 lang 속성 지정 (예: lang="ko")', tags:["must"]},
-    {t:"meta charset, viewport 설정 확인", tags:["must"]},
-    {t:"title 태그 각 페이지별 고유 작성", tags:["seo"]},
-    {t:"meta description 작성 여부", tags:["seo"]},
-    {t:"시맨틱 태그 사용 (header, nav, main, article, section, footer)", tags:["must"]},
-    {t:"heading 계층 구조 논리적 사용 (h1 ~ h6)", tags:["a11y"]},
-    {t:'이미지 alt 속성 모두 기입 (장식 이미지는 alt="")', tags:["a11y","must"]},
-    {t:"form 요소 label 연결 확인 (for-id 매칭)", tags:["a11y"]},
-    {t:'버튼에 type 속성 명시 (type="button" 등)', tags:["must"]},
-    {t:'링크 텍스트 명확성 확인 ("여기 클릭" 지양)', tags:["a11y"]},
-    {t:"tabindex 사용 최소화 및 올바른 탭 순서 확인", tags:["a11y"]},
-    {t:"오픈 그래프(OG) 태그 작성 여부", tags:["seo"]},
+  "HTML_구조":{label:"HTML 구조",items:[
+    {t:'DOCTYPE 선언 및 lang 속성 지정 (예: lang="ko")',tags:["must"]},
+    {t:"meta charset, viewport 설정 확인",tags:["must"]},
+    {t:"title 태그 각 페이지별 고유 작성",tags:["seo"]},
+    {t:"meta description 작성 여부",tags:["seo"]},
+    {t:"시맨틱 태그 사용 (header, nav, main, article, section, footer)",tags:["must"]},
+    {t:"heading 계층 구조 논리적 사용 (h1 ~ h6)",tags:["a11y"]},
+    {t:'이미지 alt 속성 모두 기입 (장식 이미지는 alt="")',tags:["a11y","must"]},
+    {t:"form 요소 label 연결 확인 (for-id 매칭)",tags:["a11y"]},
+    {t:'버튼에 type 속성 명시 (type="button" 등)',tags:["must"]},
+    {t:'링크 텍스트 명확성 확인 ("여기 클릭" 지양)',tags:["a11y"]},
+    {t:"tabindex 사용 최소화 및 올바른 탭 순서 확인",tags:["a11y"]},
+    {t:"오픈 그래프(OG) 태그 작성 여부",tags:["seo"]},
   ]},
-  "CSS_스타일": { label: "CSS / 스타일", items: [
-    {t:"CSS Reset 또는 Normalize 적용 여부", tags:["must"]},
-    {t:"미디어 쿼리 분기점(breakpoint) 일관성 확인", tags:["must"]},
-    {t:"반응형 레이아웃 주요 해상도 점검 (320px, 768px, 1280px+)", tags:["must"]},
-    {t:"CSS 변수(Custom Properties) 또는 디자인 토큰 활용", tags:[]},
-    {t:"z-index 충돌 및 스태킹 컨텍스트 확인", tags:[]},
-    {t:"overflow 처리 (hidden, scroll, clip) 적절성 확인", tags:[]},
-    {t:"폰트 로딩 전략 확인 (font-display: swap 등)", tags:["perf"]},
-    {t:"미사용 CSS 클래스 정리", tags:["perf"]},
-    {t:"hover / focus / active 상태 스타일 구분 구현", tags:["a11y"]},
-    {t:"포커스 링(focus ring) 제거 안 했는지 확인 (접근성)", tags:["a11y","must"]},
-    {t:"다크모드 지원 여부 또는 prefers-color-scheme 고려", tags:[]},
-    {t:"print 스타일시트 필요 여부 검토", tags:[]},
+  "CSS_스타일":{label:"CSS / 스타일",items:[
+    {t:"CSS Reset 또는 Normalize 적용 여부",tags:["must"]},
+    {t:"미디어 쿼리 분기점(breakpoint) 일관성 확인",tags:["must"]},
+    {t:"반응형 레이아웃 주요 해상도 점검 (320px, 768px, 1280px+)",tags:["must"]},
+    {t:"CSS 변수(Custom Properties) 또는 디자인 토큰 활용",tags:[]},
+    {t:"z-index 충돌 및 스태킹 컨텍스트 확인",tags:[]},
+    {t:"overflow 처리 (hidden, scroll, clip) 적절성 확인",tags:[]},
+    {t:"폰트 로딩 전략 확인 (font-display: swap 등)",tags:["perf"]},
+    {t:"미사용 CSS 클래스 정리",tags:["perf"]},
+    {t:"hover / focus / active 상태 스타일 구분 구현",tags:["a11y"]},
+    {t:"포커스 링(focus ring) 제거 안 했는지 확인 (접근성)",tags:["a11y","must"]},
+    {t:"다크모드 지원 여부 또는 prefers-color-scheme 고려",tags:[]},
+    {t:"print 스타일시트 필요 여부 검토",tags:[]},
   ]},
-  "크로스_브라우저": { label: "크로스 브라우저", items: [
-    {t:"Chrome / Edge / Firefox / Safari 주요 브라우저 QA", tags:["must"]},
-    {t:"iOS Safari 렌더링 확인 (특히 -webkit- 처리)", tags:["must"]},
-    {t:"Android Chrome 확인", tags:["must"]},
-    {t:"IE 지원 범위 확인 및 폴리필 처리 (필요시)", tags:[]},
-    {t:"CSS Grid / Flexbox 지원 범위 확인", tags:[]},
-    {t:"position: sticky 동작 확인 (Safari 특이사항)", tags:[]},
-    {t:"input type별 모바일 키보드 타입 확인", tags:[]},
-    {t:"100vh 모바일 주소창 이슈 대응 여부 (dvh 고려)", tags:[]},
+  "크로스_브라우저":{label:"크로스 브라우저",items:[
+    {t:"Chrome / Edge / Firefox / Safari 주요 브라우저 QA",tags:["must"]},
+    {t:"iOS Safari 렌더링 확인 (특히 -webkit- 처리)",tags:["must"]},
+    {t:"Android Chrome 확인",tags:["must"]},
+    {t:"IE 지원 범위 확인 및 폴리필 처리 (필요시)",tags:[]},
+    {t:"CSS Grid / Flexbox 지원 범위 확인",tags:[]},
+    {t:"position: sticky 동작 확인 (Safari 특이사항)",tags:[]},
+    {t:"input type별 모바일 키보드 타입 확인",tags:[]},
+    {t:"100vh 모바일 주소창 이슈 대응 여부 (dvh 고려)",tags:[]},
   ]},
-  "접근성_A11y": { label: "접근성 (A11y)", items: [
-    {t:"ARIA 역할(role) 올바른 사용 여부", tags:["a11y","must"]},
-    {t:"aria-label / aria-labelledby / aria-describedby 적절 사용", tags:["a11y"]},
-    {t:"모달·팝업: 포커스 트랩 및 ESC 닫기 구현", tags:["a11y"]},
-    {t:"색상만으로 정보 구분하지 않는지 확인", tags:["a11y"]},
-    {t:"명도 대비 비율 4.5:1 이상 확인 (WCAG AA)", tags:["a11y","must"]},
-    {t:"스크린리더 주요 흐름 테스트 (NVDA, VoiceOver)", tags:["a11y"]},
-    {t:"키보드만으로 모든 인터랙션 가능한지 확인", tags:["a11y","must"]},
-    {t:"스킵 네비게이션(skip nav) 링크 구현 여부", tags:["a11y"]},
-    {t:"동영상/GIF 자동재생 및 움직임 최소화 (prefers-reduced-motion)", tags:["a11y"]},
+  "접근성_A11y":{label:"접근성 (A11y)",items:[
+    {t:"ARIA 역할(role) 올바른 사용 여부",tags:["a11y","must"]},
+    {t:"aria-label / aria-labelledby / aria-describedby 적절 사용",tags:["a11y"]},
+    {t:"모달·팝업: 포커스 트랩 및 ESC 닫기 구현",tags:["a11y"]},
+    {t:"색상만으로 정보 구분하지 않는지 확인",tags:["a11y"]},
+    {t:"명도 대비 비율 4.5:1 이상 확인 (WCAG AA)",tags:["a11y","must"]},
+    {t:"스크린리더 주요 흐름 테스트 (NVDA, VoiceOver)",tags:["a11y"]},
+    {t:"키보드만으로 모든 인터랙션 가능한지 확인",tags:["a11y","must"]},
+    {t:"스킵 네비게이션(skip nav) 링크 구현 여부",tags:["a11y"]},
+    {t:"동영상/GIF 자동재생 및 움직임 최소화 (prefers-reduced-motion)",tags:["a11y"]},
   ]},
-  "성능_최적화": { label: "성능 / 최적화", items: [
-    {t:"이미지 포맷 최적화 (WebP / AVIF 사용 여부)", tags:["perf","must"]},
-    {t:"이미지 width/height 속성 지정 (CLS 방지)", tags:["perf"]},
-    {t:'lazy loading 적용 여부 (loading="lazy")', tags:["perf"]},
-    {t:"CSS / JS 파일 압축 및 minify 확인", tags:["perf"]},
-    {t:"렌더링 블로킹 리소스 확인 (defer / async)", tags:["perf"]},
-    {t:"불필요한 서드파티 스크립트 제거", tags:["perf"]},
-    {t:"폰트 서브셋 또는 필요 font-weight만 로드", tags:["perf"]},
-    {t:"Core Web Vitals 점수 확인 (LCP, CLS, INP)", tags:["perf","must"]},
+  "성능_최적화":{label:"성능 / 최적화",items:[
+    {t:"이미지 포맷 최적화 (WebP / AVIF 사용 여부)",tags:["perf","must"]},
+    {t:"이미지 width/height 속성 지정 (CLS 방지)",tags:["perf"]},
+    {t:'lazy loading 적용 여부 (loading="lazy")',tags:["perf"]},
+    {t:"CSS / JS 파일 압축 및 minify 확인",tags:["perf"]},
+    {t:"렌더링 블로킹 리소스 확인 (defer / async)",tags:["perf"]},
+    {t:"불필요한 서드파티 스크립트 제거",tags:["perf"]},
+    {t:"폰트 서브셋 또는 필요 font-weight만 로드",tags:["perf"]},
+    {t:"Core Web Vitals 점수 확인 (LCP, CLS, INP)",tags:["perf","must"]},
   ]},
-  "QA_기타": { label: "QA / 기타", items: [
-    {t:"콘솔 에러 / 경고 없음 확인", tags:["must"]},
-    {t:"404 페이지, 에러 페이지 스타일 적용 여부", tags:[]},
-    {t:"빈 상태(empty state) UI 존재 여부", tags:[]},
-    {t:"로딩 상태 스피너 / 스켈레톤 UI 구현", tags:[]},
-    {t:"텍스트 오버플로우(말줄임) 처리 확인", tags:[]},
-    {t:"긴 URL, 긴 문자열 입력 시 레이아웃 깨짐 방지", tags:[]},
-    {t:"다국어/긴 텍스트 대응 여부 (국제화 고려시)", tags:[]},
-    {t:"favicon 및 apple-touch-icon 설정", tags:[]},
-    {t:"robots.txt, sitemap.xml 확인 (SEO)", tags:["seo"]},
-    {t:"HTTPS 적용 및 mixed content 없음 확인", tags:["must"]},
+  "QA_기타":{label:"QA / 기타",items:[
+    {t:"콘솔 에러 / 경고 없음 확인",tags:["must"]},
+    {t:"404 페이지, 에러 페이지 스타일 적용 여부",tags:[]},
+    {t:"빈 상태(empty state) UI 존재 여부",tags:[]},
+    {t:"로딩 상태 스피너 / 스켈레톤 UI 구현",tags:[]},
+    {t:"텍스트 오버플로우(말줄임) 처리 확인",tags:[]},
+    {t:"긴 URL, 긴 문자열 입력 시 레이아웃 깨짐 방지",tags:[]},
+    {t:"다국어/긴 텍스트 대응 여부 (국제화 고려시)",tags:[]},
+    {t:"favicon 및 apple-touch-icon 설정",tags:[]},
+    {t:"robots.txt, sitemap.xml 확인 (SEO)",tags:["seo"]},
+    {t:"HTTPS 적용 및 mixed content 없음 확인",tags:["must"]},
   ]}
 };
 
-const tagLabel = {must:"필수",a11y:"접근성",perf:"성능",seo:"SEO"};
-const cats = Object.keys(data);
-let activeTab = cats[0];
-let state = {};
-let currentProject = '';
-let dbRef = null;
+const tagLabel={must:"필수",a11y:"접근성",perf:"성능",seo:"SEO"};
+const cats=Object.keys(data);
+let activeTab=cats[0];
+let state={};
+let currentProject='';
+let currentProjectName='';
+let stateRef=null;
+let projectsData={};
 
-cats.forEach(cat => data[cat].items.forEach((_, i) => state[`${cat}_${i}`] = false));
+cats.forEach(cat=>data[cat].items.forEach((_,i)=>state[`${cat}_${i}`]=false));
 
-function setSyncStatus(status, label) {
-  document.getElementById('syncDot').className = 'sync-dot ' + status;
-  document.getElementById('syncLabel').textContent = label;
+function setSyncStatus(status,label){
+  document.getElementById('syncDot').className='sync-dot '+status;
+  document.getElementById('syncLabel').textContent=label;
 }
 
-function totalItems() { return cats.reduce((a, c) => a + data[c].items.length, 0); }
-function doneItems() { return Object.values(state).filter(Boolean).length; }
-function catDone(cat) { return data[cat].items.filter((_, i) => state[`${cat}_${i}`]).length; }
-
-function updateStats() {
-  const tot = totalItems(), done = doneItems(), left = tot - done, pct = tot ? Math.round(done / tot * 100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = done + ' / ' + tot;
-  document.getElementById('s-total').textContent = tot;
-  document.getElementById('s-done').textContent = done;
-  document.getElementById('s-left').textContent = left;
-  document.getElementById('s-pct').textContent = pct + '%';
-  renderTabs();
-  renderContent();
+function totalItems(){return cats.reduce((a,c)=>a+data[c].items.length,0);}
+function doneItems(){return Object.values(state).filter(Boolean).length;}
+function catDone(cat){return data[cat].items.filter((_,i)=>state[`${cat}_${i}`]).length;}
+function calcPct(st){
+  if(!st) return 0;
+  const total=totalItems();
+  const done=cats.reduce((a,cat)=>a+data[cat].items.filter((_,i)=>st[`${cat}_${i}`]).length,0);
+  return total?Math.round(done/total*100):0;
 }
 
-function renderTabs() {
-  document.getElementById('tabs').innerHTML = cats.map(cat => {
-    const done = catDone(cat), total = data[cat].items.length;
-    return `<button class="tab${cat === activeTab ? ' active' : ''}" onclick="window._setTab('${cat}')">${data[cat].label}<span class="tab-badge">${done}/${total}</span></button>`;
+// 전체 프로젝트 목록 실시간 감지
+onValue(ref(db,'projects'), snapshot=>{
+  projectsData=snapshot.val()||{};
+  renderProjectList();
+  setSyncStatus('connected','실시간 연결됨');
+}, err=>setSyncStatus('error','연결 실패'));
+
+function renderProjectList(){
+  const list=document.getElementById('projectList');
+  const keys=Object.keys(projectsData);
+  if(!keys.length){
+    list.innerHTML='<div class="empty-projects">프로젝트가 없어요.<br>새 프로젝트를 만들어보세요!</div>';
+    return;
+  }
+  list.innerHTML=keys.map(key=>{
+    const p=projectsData[key];
+    const name=p.name||key;
+    const pct=calcPct(p.state);
+    const isActive=key===currentProject;
+    return `<div class="project-item${isActive?' active':''}" onclick="window._selectProject('${key}','${name.replace(/'/g,"\\'")}')">
+      <div class="project-dot"></div>
+      <div class="project-name">${name}</div>
+      <div class="project-pct">${pct}%</div>
+      <button class="project-del" onclick="event.stopPropagation();window._deleteProject('${key}','${name.replace(/'/g,"\\'")}')">✕</button>
+    </div>`;
   }).join('');
 }
 
-function renderContent() {
-  const cat = activeTab, items = data[cat].items;
-  const done = catDone(cat), total = items.length;
-  document.getElementById('content').innerHTML = `
+function updateStats(){
+  const tot=totalItems(),done=doneItems(),left=tot-done,pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent=done+' / '+tot;
+  document.getElementById('s-total').textContent=tot;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-left').textContent=left;
+  document.getElementById('s-pct').textContent=pct+'%';
+  renderTabs();
+  renderSection();
+}
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=cats.map(cat=>{
+    const done=catDone(cat),total=data[cat].items.length;
+    return `<button class="tab${cat===activeTab?' active':''}" onclick="window._setTab('${cat}')">${data[cat].label}<span class="tab-badge">${done}/${total}</span></button>`;
+  }).join('');
+}
+
+function renderSection(){
+  const cat=activeTab,items=data[cat].items;
+  const done=catDone(cat),total=items.length;
+  document.getElementById('section').innerHTML=`
     <div class="section">
       <div class="section-header">
         <div class="section-title">${data[cat].label}</div>
-        <span class="section-progress${done === total ? ' complete' : ''}">${done === total ? '✓ 완료' : done + ' / ' + total}</span>
+        <span class="section-progress${done===total?' complete':''}">${done===total?'✓ 완료':done+' / '+total}</span>
       </div>
-      <div class="items">
-        ${items.map((item, i) => {
-          const key = `${cat}_${i}`, checked = state[key];
-          const tagHtml = item.tags.length ? `<div class="tags">${item.tags.map(t => `<span class="tag tag-${t}">${tagLabel[t]}</span>`).join('')}</div>` : '';
-          return `<div class="item"><label><input type="checkbox" ${checked ? 'checked' : ''} onchange="window._toggle('${cat}',${i},this.checked)"><div class="item-text${checked ? ' checked' : ''}">${item.t}${tagHtml}</div></label></div>`;
+      <div>
+        ${items.map((item,i)=>{
+          const key=`${cat}_${i}`,checked=state[key];
+          const tagHtml=item.tags.length?`<div class="tags">${item.tags.map(t=>`<span class="tag tag-${t}">${tagLabel[t]}</span>`).join('')}</div>`:'';
+          return `<div class="item"><label><input type="checkbox" ${checked?'checked':''} onchange="window._toggle('${cat}',${i},this.checked)"><div class="item-text${checked?' checked':''}">${item.t}${tagHtml}</div></label></div>`;
         }).join('')}
-        ${done === total ? `<div class="all-done">✓ 이 카테고리 완료!</div>` : ''}
+        ${done===total?`<div class="all-done">✓ 이 카테고리 완료!</div>`:''}
       </div>
     </div>`;
 }
 
-window._setTab = (cat) => { activeTab = cat; renderContent(); renderTabs(); };
+window._selectProject=function(key,name){
+  if(stateRef) off(stateRef);
+  currentProject=key;
+  currentProjectName=name;
+  cats.forEach(cat=>data[cat].items.forEach((_,i)=>state[`${cat}_${i}`]=false));
 
-window._toggle = async (cat, i, val) => {
-  if (!currentProject) { showToast('먼저 프로젝트를 선택해주세요'); return; }
-  const key = `${cat}_${i}`;
-  state[key] = val;
+  document.getElementById('topbarTitle').textContent=name;
+  document.getElementById('topbarSub').textContent='실시간 동기화 중';
+  document.getElementById('contentArea').innerHTML=`
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">전체 항목</div></div>
+      <div class="stat done"><div class="stat-num" id="s-done">0</div><div class="stat-label">완료</div></div>
+      <div class="stat left"><div class="stat-num" id="s-left">0</div><div class="stat-label">남은 항목</div></div>
+      <div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-label">진행률</div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-top"><span>전체 진행률</span><strong id="progressText">0 / 0</strong></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="section"></div>`;
+
+  stateRef=ref(db,`projects/${key}/state`);
+  onValue(stateRef,snapshot=>{
+    const saved=snapshot.val()||{};
+    cats.forEach(cat=>data[cat].items.forEach((_,i)=>{state[`${cat}_${i}`]=saved[`${cat}_${i}`]||false;}));
+    updateStats();
+    renderProjectList();
+  });
+};
+
+window._toggle=async function(cat,i,val){
+  const key=`${cat}_${i}`;
+  state[key]=val;
   updateStats();
-  setSyncStatus('syncing', '저장 중...');
-  try {
-    await set(ref(db, `projects/${currentProject}/state/${key}`), val);
-    setSyncStatus('connected', `"${document.getElementById('projectName').value}" 연결됨`);
-  } catch (e) {
-    setSyncStatus('error', '저장 실패');
-    showToast('저장 실패: ' + e.message);
+  setSyncStatus('syncing','저장 중...');
+  try{
+    await set(ref(db,`projects/${currentProject}/state/${key}`),val);
+    setSyncStatus('connected','실시간 연결됨');
+  }catch(e){
+    setSyncStatus('error','저장 실패');
+    showToast('저장 실패: '+e.message);
   }
 };
 
-function connectProject(name) {
-  const projectKey = safeKey(name);
-  currentProject = projectKey;
-  if (dbRef) off(dbRef);
-  setSyncStatus('syncing', '연결 중...');
-  const projectRef = ref(db, `projects/${projectKey}/state`);
-  onValue(projectRef, (snapshot) => {
-    const saved = snapshot.val() || {};
-    cats.forEach(cat => data[cat].items.forEach((_, i) => {
-      state[`${cat}_${i}`] = saved[`${cat}_${i}`] || false;
-    }));
-    updateStats();
-    setSyncStatus('connected', `"${name}" 실시간 연결됨`);
-  }, (error) => {
-    setSyncStatus('error', '연결 실패');
-    showToast('연결 실패: ' + error.message);
-  });
-  dbRef = projectRef;
-  showToast(`"${name}" 프로젝트에 연결됐어요!`);
-}
+window._setTab=function(cat){activeTab=cat;renderSection();renderTabs();};
 
-window.loadProject = () => {
-  const name = document.getElementById('projectName').value.trim();
-  if (!name) { showToast('프로젝트명을 입력해주세요'); return; }
-  connectProject(name);
+window._deleteProject=async function(key,name){
+  if(!confirm(`"${name}" 프로젝트를 삭제할까요?\n모든 체크 데이터가 삭제됩니다.`)) return;
+  await remove(ref(db,`projects/${key}`));
+  if(currentProject===key){
+    currentProject='';
+    document.getElementById('topbarTitle').textContent='체크리스트';
+    document.getElementById('topbarSub').textContent='왼쪽에서 프로젝트를 선택하세요';
+    document.getElementById('contentArea').innerHTML=`<div class="welcome"><div class="welcome-icon">✅</div><h2>프로젝트를 선택해주세요</h2><p>왼쪽 사이드바에서 프로젝트를 선택하거나<br>새 프로젝트를 만들어보세요.</p></div>`;
+  }
+  showToast(`"${name}" 삭제됨`);
 };
 
-window.showNewProject = () => {
-  document.getElementById('newProjectModal').style.display = 'flex';
-  setTimeout(() => document.getElementById('newProjectInput').focus(), 50);
+window.showNewProject=function(){
+  document.getElementById('newProjectModal').style.display='flex';
+  setTimeout(()=>document.getElementById('newProjectInput').focus(),50);
 };
 
-window.closeModal = () => {
-  document.getElementById('newProjectModal').style.display = 'none';
+window.closeModal=function(){
+  document.getElementById('newProjectModal').style.display='none';
+  document.getElementById('newProjectInput').value='';
 };
 
-window.createProject = () => {
-  const name = document.getElementById('newProjectInput').value.trim();
-  if (!name) { showToast('프로젝트명을 입력해주세요'); return; }
+window.createProject=async function(){
+  const name=document.getElementById('newProjectInput').value.trim();
+  if(!name){showToast('프로젝트명을 입력해주세요');return;}
+  const key=safeKey(name)+'_'+Date.now();
+  await set(ref(db,`projects/${key}`),{name,createdAt:Date.now(),state:{}});
   closeModal();
-  document.getElementById('projectName').value = name;
-  cats.forEach(cat => data[cat].items.forEach((_, i) => state[`${cat}_${i}`] = false));
-  connectProject(name);
+  showToast(`"${name}" 프로젝트 생성!`);
+  window._selectProject(key,name);
 };
 
-window.resetAll = async () => {
-  if (!currentProject) { showToast('먼저 프로젝트를 선택해주세요'); return; }
-  if (!confirm('현재 프로젝트의 체크를 모두 초기화할까요?\n팀원 화면에도 즉시 반영됩니다.')) return;
-  const updates = {};
-  cats.forEach(cat => data[cat].items.forEach((_, i) => updates[`${cat}_${i}`] = false));
-  await set(ref(db, `projects/${currentProject}/state`), updates);
+window.resetAll=async function(){
+  if(!currentProject){showToast('프로젝트를 먼저 선택해주세요');return;}
+  if(!confirm(`"${currentProjectName}" 체크를 모두 초기화할까요?\n팀원 화면에도 즉시 반영됩니다.`)) return;
+  const updates={};
+  cats.forEach(cat=>data[cat].items.forEach((_,i)=>updates[`${cat}_${i}`]=false));
+  await set(ref(db,`projects/${currentProject}/state`),updates);
   showToast('↺ 초기화 완료');
 };
 
-window.exportMd = () => {
-  const name = document.getElementById('projectName').value.trim() || '프로젝트';
-  let md = `# ${name} - 마크업 퍼블리셔 체크리스트\n\n`;
-  md += `> 완료: ${doneItems()} / ${totalItems()} (${Math.round(doneItems() / totalItems() * 100)}%)\n\n`;
-  cats.forEach(cat => {
-    md += `## ${data[cat].label}\n\n`;
-    data[cat].items.forEach((item, i) => md += `- [${state[`${cat}_${i}`] ? 'x' : ' '}] ${item.t}\n`);
-    md += '\n';
+window.exportMd=function(){
+  if(!currentProject){showToast('프로젝트를 먼저 선택해주세요');return;}
+  let md=`# ${currentProjectName} - 마크업 퍼블리셔 체크리스트\n\n`;
+  md+=`> 완료: ${doneItems()} / ${totalItems()} (${Math.round(doneItems()/totalItems()*100)}%)\n\n`;
+  cats.forEach(cat=>{
+    md+=`## ${data[cat].label}\n\n`;
+    data[cat].items.forEach((item,i)=>md+=`- [${state[`${cat}_${i}`]?'x':' '}] ${item.t}\n`);
+    md+='\n';
   });
-  navigator.clipboard.writeText(md).then(() => showToast('📋 마크다운 복사 완료!'));
+  navigator.clipboard.writeText(md).then(()=>showToast('📋 마크다운 복사 완료!'));
 };
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-document.getElementById('projectName').addEventListener('keydown', e => { if (e.key === 'Enter') window.loadProject(); });
-document.getElementById('newProjectInput').addEventListener('keydown', e => { if (e.key === 'Enter') window.createProject(); });
-
-updateStats();
+document.getElementById('newProjectInput').addEventListener('keydown',e=>{if(e.key==='Enter')window.createProject();});
 </script>
 </body>
 </html>
